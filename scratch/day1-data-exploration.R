@@ -18,6 +18,10 @@ filtered_binded <- binded_rows |>
     Sample_Date >= ymd("1988-01-01") & Sample_Date < ymd("1995-01-01")
   )
 
+q1_filtered <- filtered_binded |> 
+  filter(
+    Sample_ID == "Q1"
+  )
 
 concentrations <- tibble(
   window_start = seq(
@@ -34,20 +38,62 @@ concentrations <- tibble(
     
 )
 
-qs_smoothed <- tibble(
-  window_start = seq(
-    qs_data$sample_date[1],
-    qs_data$sample_date[nrow(qs_data)],
-    by = "9 days"
-  ),
-  k_mgl = NA,
-  mg_mgl = NA
-)
+for (i in 1:nrow(concentrations)){
+  w1 <- concentrations$window_start[i]
+  w2 <- concentrations$window_start[i] + 63
+  NO3_N_value <- q1_filtered$'NO3-N'[
+    q1_filtered$Sample_Date >= w1 & q1_filtered$Sample_Date < w2
+  ]
+  NH4_N_value <- q1_filtered$'NH4-N'[
+    q1_filtered$Sample_Date >= w1 & q1_filtered$Sample_Date < w2
+  ]
+  K_value <- q1_filtered$K[
+    q1_filtered$Sample_Date >= w1 & q1_filtered$Sample_Date < w2
+  ]
+  Mg_value <- q1_filtered$Mg[
+    q1_filtered$Sample_Date >= w1 & q1_filtered$Sample_Date < w2
+  ]
+  Ca_value <- q1_filtered$Ca[
+    q1_filtered$Sample_Date >= w1 & q1_filtered$Sample_Date < w2
+  ]
+
+  q1_filtered$'NO3-N'[i] <- mean(NO3_N_value, na.rm = TRUE)
+  q1_filtered$'NH4-N'[i] <- mean(NH4_N_value, na.rm = TRUE)
+  q1_filtered$K[i] <- mean(K_value, na.rm = TRUE)
+  q1_filtered$Mg[i] <- mean(Mg_value, na.rm = TRUE)
+  q1_filtered$Ca[i] <- mean(Ca_value, na.rm = TRUE)
+}
 
 
 
+for (i in 1:nrow(qs_smoothed)) {
+  # i is our iterator
+  # 1:nrow(qs_smoothed) is our sequence
+  # i will take on those values, one at a time
+
+  # What's the start of the window? Call it w1
+  w1 <- qs_smoothed$window_start[i]
+  # What's the end of the window? Call it w2
+  w2 <- qs_smoothed$window_start[i] + 9
+  # What potassium values are in that window?
+  k_mgl_value <- qs_data$k_mgl[
+    qs_data$sample_date >= w1 & qs_data$sample_date < w2
+  ]
+  mg_mgl_value <- qs_data$mg_mgl[
+    qs_data$sample_date >= w1 & qs_data$sample_date < w2
+  ]
+  # What's the mean
+  qs_smoothed$k_mgl[i] <- mean(k_mgl_value, na.rm = TRUE)
+  qs_smoothed$mg_mgl[i] <- mean(mg_mgl_value, na.rm = TRUE)
+  # How do you put it in the result?
+}
+
+qs_smoothed_longer <- qs_smoothed |> 
+  pivot_longer(
+    cols = c(k_mgl, mg_mgl),
+    names_to = "Nutrients",
+    values_to = "Concentration"
+  )
 
 
-for (i in 1:length(Sample_ID)) {
 
-}+
