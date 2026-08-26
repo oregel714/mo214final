@@ -24,6 +24,7 @@ q1_filtered <- filtered_binded |>
   )
 
 concentrations <- tibble(
+  "Sample_ID" = NA,
   window_start = seq(
     filtered_binded$Sample_Date[1],
     filtered_binded$Sample_Date[nrow(filtered_binded)],
