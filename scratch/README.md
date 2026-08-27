@@ -3,6 +3,9 @@
 ## Purpose 
 The purpose of this repository is to house the code for recreating the figure, while also running the analysis of the data that the figure displays. This includes a moving average for each site in addition to any other analyses performed. 
 
+![](Images/Schaefer_etal_2020_fig3.png)
+^This should work if your README.md is moved to the parent folder /mo214final
+
 ## Repository Structure 
 This repository currently contains two folders: 
 
