@@ -82,7 +82,10 @@ ggplot(
   )
 ) + 
   geom_line() + 
-  facet_wrap(vars(Ion), scales = 'free', ncol = 1)
+  facet_wrap(vars(Ion), scales = 'free', ncol = 1) + 
+  labs(
+    y = "Years" 
+  )
 
 
   
