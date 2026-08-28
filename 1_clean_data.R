@@ -31,4 +31,25 @@ MPR <- moving_average(rio_mameyes)
 # Combining all moving average vectors together
 total_sites <- bind_rows(Q1, Q2, Q3, MPR)
 
-write_csv(total_sites, "output/clean_data.csv")
+clean_data <- total_sites |>
+  pivot_longer(
+    cols = no3_ugl:ca_mgl,
+    names_to = "Ion",
+    values_to = "Concentration"
+  ) |>
+  mutate(
+    Ion = factor(
+      Ion,
+      levels = c("k_mgl", "no3_ugl", "mg_mgl", "ca_mgl", "nh4_ugl"),
+    )
+  ) |>
+  mutate(
+    site = factor(
+      site,
+      levels = c("MPR", "Q1", "Q2", "Q3"),
+      labels = c("PRM", "BQ1", "BQ2", "BQ3")
+    )
+  )
+
+
+write_csv(clean_data, "output/clean_data.csv")

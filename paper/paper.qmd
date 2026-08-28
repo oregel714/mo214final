@@ -1,32 +1,77 @@
+---
+title: "EDS 214 Final Project"
+author:
+    name: "Mark Oregel"
+    email: oregel@ucsb.edu
+date: "August 28, 2026"
+toc: true
+format: html
+execute:
+    message: false
+    warning: false
+---
+
 ### Background 
+Our goal for this project is to create an analytical workflow which would reproduce **figure 3** from Schaefer et al. (2000). Our created figure will display ion concentrations in streams before and after Hurricane Hugo.
 
-```{r}
+![](/Images/Schaefer_etal_2020_fig3.png)
 
 
-
-```
 
 ### Data
-
-
+The figure we are referencing comes from a Journal of Tropical Ecology, "Effects of Hurricane Disturbance on Stream Water Concentrations and Fluxes in Eight Tropical Forest Watersheds of the Luquillo Experimental Forest, Puerto Rico." The raw data is sourced from the Environmental Data Initiative. The original figure utilized data from sites Q1, Q2, Q3, and PRM. 
 
 ```{r}
+#| echo: false 
+#| output: false
+#| warning: false
 
-
-
+library(tidyverse)
+clean_data <- read_csv("../output/clean_data.csv")
 ```
 
 ### Methods 
-
-```{r}
-
-
-```
-
+In order to recreate this figure, a moving average function was created to take the average ion concentration every 9 weeks. This involves using a filtered, combined dataset to which the average function is applied to. 
 
 ### Results 
-
+The following figure displays a moving average of ion concentration from 1988 to 1995 across all four sites as indicated by the four different line types. 
 ```{r}
+#| echo: FALSE
+#| warning: FALSE
+# Creating hurricane inidicator as an x-intercept line
+hurricane_date <- as.Date("1989-09-18")
 
-
+# Creating ggplot with longer_sites data
+ggplot(
+  data = clean_data,
+  mapping = aes(
+    x = window_start,
+    y = Concentration,
+    linetype = site
+  )
+) +
+  # Adding geom_line for line plot
+  geom_line() +
+  # Implementing dashed line to indidicate hurrican occurance
+  geom_vline(
+    xintercept = hurricane_date,
+    linetype = "dashed",
+    linewidth = 0.4
+  ) +
+  # Adding black and white theme
+  theme_bw() +
+  # facet_wrap allowing for seperation of ions into seperate graph
+  facet_wrap(vars(Ion), scales = 'free', ncol = 1, strip.position = "left") +
+  # Changing x-axis label and removing y-axis label
+  labs(
+    x = "Years",
+    y = NULL,
+    linetype = NULL
+  ) +
+  # Deleting lines in the background of the graphs
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    strip.position = "outside"
+  )
 ```

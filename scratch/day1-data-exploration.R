@@ -32,14 +32,15 @@ MPR <- moving_average(rio_mameyes)
 total_sites <- bind_rows(Q1, Q2, Q3, MPR)
 
 # Creating new vector to graph
-longer_sites <- total_sites |>
+clean_data <- total_sites |>
   pivot_longer(
     cols = no3_ugl:ca_mgl,
     names_to = "Ion",
     values_to = "Concentration"
   ) |>
   mutate(
-    Ion = factor(,
+    Ion = factor(
+      Ion,
       levels = c("k_mgl", "no3_ugl", "mg_mgl", "ca_mgl", "nh4_ugl"),
     )
   ) |>
@@ -47,7 +48,7 @@ longer_sites <- total_sites |>
     site = factor(
       site,
       levels = c("MPR", "Q1", "Q2", "Q3"),
-      labels = c("PRM", "BQ1", "BQ2", "BQ#")
+      labels = c("PRM", "BQ1", "BQ2", "BQ3")
     )
   )
 
@@ -56,7 +57,7 @@ hurricane_date <- as.Date("1989-09-18")
 
 # Creating ggplot with longer_sites data
 ggplot(
-  data = longer_sites,
+  data = clean_data,
   mapping = aes(
     x = window_start,
     y = Concentration,
