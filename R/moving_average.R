@@ -4,17 +4,16 @@ moving_average <- function(site_data) {
   result <- tibble(
     site = site_data$Sample_ID[1],
     window_start = seq(
-      site_data$Sample_Date[1], 
-      site_data$Sample_Date[nrow(site_data)],
-       by = "9 weeks"
-      ),
-      no3_ugl = NA,
-      nh4_ugl = NA,
-      k_mgl = NA,
-      mg_mgl = NA,
-      ca_mgl = NA
+      ymd("1986-05-20"),
+      ymd("1995-01-01"),
+      by = "9 weeks"
+    ),
+    no3_ugl = NA,
+    nh4_ugl = NA,
+    k_mgl = NA,
+    mg_mgl = NA,
+    ca_mgl = NA
     # Fill in the rest of the ions
-
   )
 
   # Fill in the iterator and sequence
@@ -35,7 +34,7 @@ moving_average <- function(site_data) {
     Ca_window <- site_data$Ca[in_window]
 
     # The line above gets potassium in the window. Get the rest of the ions too
-    
+
     # Calculate the mean of each ion concentration and fill in the result
     result$no3_ugl[i] <- mean(NO3_N_window, na.rm = TRUE)
     result$nh4_ugl[i] <- mean(NH4_N_window, na.rm = TRUE)
@@ -43,7 +42,7 @@ moving_average <- function(site_data) {
     result$mg_mgl[i] <- mean(Mg_window, na.rm = TRUE)
     result$ca_mgl[i] <- mean(Ca_window, na.rm = TRUE)
   }
-  
+
   # Return the result
   return(result)
 }
