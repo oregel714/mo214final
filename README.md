@@ -3,12 +3,18 @@
 ## Purpose 
 The purpose of this repository is to house the code for recreating the figure, while also running the analysis of the data that the figure displays. This includes a moving average for each site in addition to any other analyses performed. 
 
-![](Images/Schaefer_etal_2020_fig3.png)
+![](paper/Images/Schaefer_etal_2020_fig3.png)
 
 **Figure 3:** Concentrations in Bisley, Puerto Rico streams before and after Hurricane Hugo, 9-wk moving averages. (a) potassium, (b) nitrate-N, (c) magnesium, (d) calcium, and (e) ammonium-N. The vertical lines mark the time of hurricane disturbance. Reproduced from Schaefer et al. (2000). 
 
 ## Repository Structure 
-This repository currently contains nine folders: 
+This repository currently contains six folders: 
+
+### Images:
+This folder contains an image of the original figure from Schaefer et al. (2000). 
+
+### R: 
+This folder contains the moving_average.R script used for creating the moving average function. 
 
 ### data: 
 The data folder contains the data frames that are displayed in the figure.
@@ -20,6 +26,9 @@ The data folder contains the data frames that are displayed in the figure.
 
 ### scratch:
 The scratch folder contains the working code for creating an empty data frame which will be populated by the manipulated data contained in the data folder. 
+
+### docs: 
+Contains an HTML file for the analysis paper 
 
 ## Data Access
 All data used to recreate the figure was acquired from the Environmental Data Initiative and is housed in the data folder within this repository. 
